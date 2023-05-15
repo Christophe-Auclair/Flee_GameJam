@@ -13,12 +13,11 @@ public class InitialExplosition : MonoBehaviour
     void Start()
     {
         SpawnInitialExplosion();
-
     }
 
     public async void SpawnInitialExplosion()
     {
-        await Task.Delay(1500);
+        await Task.Delay(3000);
         GameObject exp = Instantiate(explosion, transform.position, transform.rotation);
         Destroy(exp, 3);
         Knockback();

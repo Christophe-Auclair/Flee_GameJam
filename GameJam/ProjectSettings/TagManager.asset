@@ -19,8 +19,8 @@ TagManager:
   - Enemies
   - Asteroids
   - SuperNova
-  - 
-  - 
+  - Boost
+  - Portal
   - 
   - 
   - 
@@ -62,4 +62,7 @@ TagManager:
     locked: 0
   - name: Walls
     uniqueID: 4183714695
+    locked: 0
+  - name: Fader
+    uniqueID: 2509046757
     locked: 0

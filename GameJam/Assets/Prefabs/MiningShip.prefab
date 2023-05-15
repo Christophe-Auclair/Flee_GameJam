@@ -75,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 572629965
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300004, guid: 8aeb9e233fbb8f14db39770841b78b94, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -158,7 +158,10 @@ PolygonCollider2D:
     - - {x: -0.0049115648, y: 0.23379582}
       - {x: -0.23714474, y: 0.08235243}
       - {x: -0.22592181, y: -0.10726398}
-      - {x: -0.00029176474, y: -0.20809531}
+      - {x: -0.063046426, y: -0.0029626638}
+      - {x: -0.03833081, y: -0.20302345}
+      - {x: 0.041148625, y: -0.20007204}
+      - {x: 0.056568757, y: -0.00063315034}
       - {x: 0.22186098, y: -0.10402501}
       - {x: 0.23611219, y: -0.1002176}
       - {x: 0.24428752, y: 0.07947981}
@@ -175,6 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nomDeLaCible: PlayerAsteroid
-  longueurRayon: 10
+  longueurRayon: 15
   vitesse: 3
   explosion: {fileID: 5870109596222570627, guid: 5942c39535f9399429e341d6ca299009, type: 3}

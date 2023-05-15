@@ -11,6 +11,9 @@ public class CameraNoRotation : MonoBehaviour
 
     void Update()
     {
-        transform.position = new Vector3(target.transform.position.x, yDistance, zDistance);
+        if (target)
+        {
+            transform.position = new Vector3(target.transform.position.x, yDistance, zDistance);
+        }
     }
 }

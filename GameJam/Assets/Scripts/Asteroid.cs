@@ -12,12 +12,12 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
-        initialRotation = Random.Range(0, 1);
-        rotationSpeed = Random.Range(0, 0.3f);
-        transform.position = new Vector3(transform.position.x, transform.position.y, initialRotation);
+        initialRotation = Random.Range(0, 360);
+        rotationSpeed = Random.Range(0, 2f);
+        transform.Rotate(new Vector3(0, 0, initialRotation));
     }
 
-    void Update()
+    void FixedUpdate()
     {
         transform.Rotate(0, 0, rotationSpeed);
     }

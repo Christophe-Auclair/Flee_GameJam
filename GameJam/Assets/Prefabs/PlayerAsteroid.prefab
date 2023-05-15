@@ -103,7 +103,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1199b1e0d7641bb419ce26e9cb529688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroid: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 3
+  maxSpeed: 100
   explosion: {fileID: 0}
   control: 1
 --- !u!96 &1483140692670629830
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1199b1e0d7641bb419ce26e9cb529688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroid: {fileID: 0}
   moveSpeed: 5
+  maxSpeed: 0
   explosion: {fileID: 5870109596222570627, guid: 5942c39535f9399429e341d6ca299009, type: 3}
   control: 1

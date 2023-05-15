@@ -20,9 +20,8 @@ public class MiningShip : MonoBehaviour
     private Vector3 direction;
     private Vector3 mouvement;
     private bool estEnChasse = false;
-    private SpriteRenderer miningShip;
-    private float taux = 0.01f;
     private bool alive = true;
+    private float initialRotation;
 
     // Start is called before the first frame update
     void Start()
@@ -36,17 +35,11 @@ public class MiningShip : MonoBehaviour
 
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
-
         estEnChasse = false;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //anim.SetFloat("Horizontal", mouvement.x);
-        //anim.SetFloat("Vertical", mouvement.y);
+        initialRotation = Random.Range(0, 360);
+        transform.Rotate(new Vector3(0, 0, initialRotation));
     }
-
 
     private void FixedUpdate()
     {
@@ -114,26 +107,12 @@ public class MiningShip : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (LayerMask.LayerToName(collision.gameObject.layer) == "Enemies")
+        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+
+        if (layerName == "SuperNova")
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }
-    //IEnumerator FonduIn()
-    //{
-    //    lama = GetComponent<SpriteRenderer>();
-    //    Color colTemp = Color.black;
-    //    colTemp.a = 1f;
-    //    lama.color = colTemp;
-    //    while (lama.color.a > 0.0f)
-    //    {
-    //        colTemp.a -= taux;
-    //        lama.color = colTemp;
-    //        yield return new WaitForEndOfFrame(); //À Chaque update
-    //    }
-    //    //Pour ne pas avoir de alpha négatif
-    //    colTemp.a = 0.0f;
-    //    lama.color = colTemp;
-    //}
 }
