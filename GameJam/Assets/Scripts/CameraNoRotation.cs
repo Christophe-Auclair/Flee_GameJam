@@ -6,10 +6,11 @@ public class CameraNoRotation : MonoBehaviour
 {
     [SerializeField]
     GameObject target;
-    private float distance = -10;
+    private float zDistance = -10.0f;
+    private float yDistance = 0.0f;
 
     void Update()
     {
-        transform.position = new Vector3(target.transform.position.x, target.transform.position.y, distance);
+        transform.position = new Vector3(target.transform.position.x, yDistance, zDistance);
     }
 }
