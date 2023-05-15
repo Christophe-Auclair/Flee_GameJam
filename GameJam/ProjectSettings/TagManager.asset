@@ -18,7 +18,7 @@ TagManager:
   - Walls
   - Enemies
   - Asteroids
-  - 
+  - SuperNova
   - 
   - 
   - 
@@ -53,6 +53,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 49264983
+    locked: 0
+  - name: SuperNova
+    uniqueID: 87985069
     locked: 0
   - name: Enemies
     uniqueID: 572629965

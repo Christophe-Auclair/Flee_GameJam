@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 325666832603105144}
   - component: {fileID: 7461112130772372722}
   m_Layer: 0
-  m_Name: CFXR4 Sun
+  m_Name: SuperNovaEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

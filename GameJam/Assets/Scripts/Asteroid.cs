@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject explosion;
     private float rotationSpeed;
     private float initialRotation;
 
@@ -22,8 +24,11 @@ public class Asteroid : MonoBehaviour
    
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (LayerMask.LayerToName(collision.gameObject.layer) == "Walls" || LayerMask.LayerToName(collision.gameObject.layer) == "Enemies")
+        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+
+        if (layerName == "Walls" || layerName == "Enemies" || layerName == "SuperNova")
         {
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

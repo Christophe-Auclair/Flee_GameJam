@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class PlayerAsteroid : MonoBehaviour
 {
     [SerializeField]
-    GameObject asteroid;
-    [SerializeField]
     private float moveSpeed;
+    [SerializeField]
+    private GameObject explosion;
 
     private Rigidbody2D rig;
     private Vector2 movement;
@@ -42,8 +44,6 @@ public class PlayerAsteroid : MonoBehaviour
         {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
-            //anim.ResetTrigger("Attacking");
-            //anim.ResetTrigger("Startled");
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
@@ -100,11 +100,24 @@ public class PlayerAsteroid : MonoBehaviour
     void Update()
     {
         GetInput();
-        asteroid.transform.Rotate(0, 0 ,0.1f);
+        this.transform.Rotate(0, 0 ,0.1f);
     }
 
     private void FixedUpdate()
     {
         Move();
+    }
+
+    private async void OnCollisionEnter2D(Collision2D collision)
+    {
+        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+
+        if (layerName == "Walls" || layerName == "Enemies" || layerName == "SuperNova")
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+            await Task.Delay(1000);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
