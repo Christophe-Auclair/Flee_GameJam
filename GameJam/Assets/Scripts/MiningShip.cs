@@ -109,7 +109,7 @@ public class MiningShip : MonoBehaviour
     {
         string layerName = LayerMask.LayerToName(collision.gameObject.layer);
 
-        if (layerName == "SuperNova")
+        if (layerName == "SuperNova" || layerName == "Planets" || layerName == "Missiles")
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);

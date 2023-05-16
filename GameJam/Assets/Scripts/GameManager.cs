@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour
     private bool onMenu;
     [SerializeField]
     private float interval;
-    [SerializeField]
-    private float taux = 0.001f;
+    private float taux = 0.01f;
     [SerializeField]
     private GameObject starSpawnLocation;
     [SerializeField]

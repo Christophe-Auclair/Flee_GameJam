@@ -13,13 +13,16 @@ public class PlayerAsteroid : MonoBehaviour
     [SerializeField]
     private GameObject explosion;
     [SerializeField]
+    private GameObject endExplosion;
+    [SerializeField]
     private GameManager gameManager;
     [SerializeField]
-    private int hp = 2;
+    private int hp = 3;
 
     private Rigidbody2D rig;
     private Vector2 movement;
     public bool control = false;
+    public bool end = false;
     private bool boosted;
     private int boostedFramesRemaining;
 
@@ -29,6 +32,10 @@ public class PlayerAsteroid : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         Spawn();
         HealthBar.instance.SetMaxHealth(this.hp);
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            rig.AddForce(new Vector2(5, 0f), ForceMode2D.Impulse);
+        }
     }
 
     public async void Spawn()
@@ -53,10 +60,13 @@ public class PlayerAsteroid : MonoBehaviour
 
     private void Move()
     {
-        rig.AddForce(new Vector2((movement.x * moveSpeed), (movement.y * moveSpeed)), ForceMode2D.Force);
-        if (!boosted)
+        if (!end)
         {
-            rig.velocity = Vector2.ClampMagnitude(rig.velocity, maxSpeed);
+            rig.AddForce(new Vector2((movement.x * moveSpeed), (movement.y * moveSpeed)), ForceMode2D.Force);
+            if (!boosted)
+            {
+                rig.velocity = Vector2.ClampMagnitude(rig.velocity, maxSpeed);
+            }
         }
     }
 
@@ -82,8 +92,6 @@ public class PlayerAsteroid : MonoBehaviour
 
     public async void CheckIfDead()
     {
-        Debug.Log(hp);
-
         if (this.hp <= 0)
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
@@ -98,7 +106,7 @@ public class PlayerAsteroid : MonoBehaviour
     {
        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
 
-        if (layerName == "Walls" || layerName == "Ships" || layerName == "Asteroids" || layerName == "Planets")
+        if (layerName == "Walls" || layerName == "Ships" || layerName == "Asteroids" || layerName == "Planets" || layerName == "Missiles")
         {
             this.hp -= 1;
             HealthBar.instance.SetHealth(this.hp);
@@ -118,14 +126,35 @@ public class PlayerAsteroid : MonoBehaviour
         {
             gameManager.FadeOutGameplay();
             await Task.Delay(1500);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }   
         else if (layerName == "Boost")
         {
             rig.AddForce(new Vector2((movement.x * (moveSpeed * 1.5f)), (movement.y * (moveSpeed * 0.75f))), ForceMode2D.Impulse);
             boosted = true;
             boostedFramesRemaining = 130;
+        }   
+        else if (layerName == "MotherShip")
+        {
+            control = false;
+            boosted = true;
+            end = true;
+            GameObject motherShip = GameObject.Find("MotherShip");
+            Vector3 direction = motherShip.transform.position - transform.position;
+            direction.Normalize();
+            rig.velocity = new Vector2(0f, 0f);
+            rig.AddForce(new Vector2((direction.x * 15f), (direction.y * 15f)), ForceMode2D.Impulse);
+        }
+        else if (layerName == "MotherShipHitBox")
+        {
+            Instantiate(endExplosion, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+            GameObject motherShip = GameObject.Find("MotherShip");
+            Destroy(motherShip);
+            await Task.Delay(3000);
+            gameManager.FadeOutGameplay();
+            await Task.Delay(1500);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

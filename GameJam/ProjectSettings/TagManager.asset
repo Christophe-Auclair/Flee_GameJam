@@ -22,9 +22,9 @@ TagManager:
   - Boost
   - Portal
   - Ships
-  - 
-  - 
-  - 
+  - MotherShip
+  - MotherShipHitBox
+  - Missiles
   - 
   - 
   - 

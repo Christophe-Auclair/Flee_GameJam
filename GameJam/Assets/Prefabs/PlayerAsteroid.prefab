@@ -231,5 +231,8 @@ MonoBehaviour:
   moveSpeed: 5
   maxSpeed: 0
   explosion: {fileID: 5870109596222570627, guid: 5942c39535f9399429e341d6ca299009, type: 3}
+  endExplosion: {fileID: 3655474298910275209, guid: 4ce796f8773898e42a8be28d06e8f9ad, type: 3}
   gameManager: {fileID: 0}
+  hp: 3
   control: 1
+  end: 0
