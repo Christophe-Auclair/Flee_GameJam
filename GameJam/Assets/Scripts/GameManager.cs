@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private Image faderUI;
     private bool onMenu;
     [SerializeField]
-    private float interval = 10f;
+    private float interval;
     [SerializeField]
     private float taux = 0.001f;
     [SerializeField]
@@ -41,21 +41,24 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        onMenu = false;
         GameObject fader = GameObject.Find("Fader");
         faderGameplay = fader.GetComponent<SpriteRenderer>();
         faderUI = fader.GetComponent<Image>();
         if (faderGameplay != null)
         {
             FadeInGameplay();
-            onMenu = false;
         }
         else if (faderUI != null)
         {            
             FadeInUI();
-            onMenu = true;
         }
-        menuAsteroid = GameObject.Find("MenuAsteroid");
-        
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            onMenu = true;
+            menuAsteroid = GameObject.Find("MenuAsteroid");
+            StartCoroutine(ShootingStar());
+        }
     }
 
     public async void StartGame()
@@ -71,31 +74,36 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public async void Menu()
+    {
+        FadeOutUI();
+        await Task.Delay(1500);
+        SceneManager.LoadScene(0);
+    }
+
     public void FixedUpdate()
     {
-        SpawnStar();
         if (onMenu)
         {
             menuAsteroid.transform.Rotate(0, 0, 0.25f);
-            ShootingStar();
         }          
     }
 
     IEnumerator ShootingStar()
-    {
-        SpawnStar();
-        yield return new WaitForSeconds(interval);
+    {  
+        while (true)
+        {
+            SpawnStar();
+            yield return new WaitForSeconds(interval);
+        }
     }
 
     public void SpawnStar()
     {
         RectTransform spawnRect = starSpawnLocation.GetComponent<RectTransform>();
-        Vector3 spawnLocation = new Vector3(spawnRect.localPosition.x, spawnRect.localPosition.y, spawnRect.localPosition.y);
-        GameObject star = Instantiate(shootingStar, spawnLocation, Quaternion.identity);
+        GameObject star = Instantiate(shootingStar, spawnRect.anchoredPosition, Quaternion.identity);
         star.transform.SetParent(GameObject.Find("Canvas").transform, false);
-        RectTransform starRect = star.GetComponent<RectTransform>();
-        starRect.localPosition = starSpawnLocation.transform.position;
-        Destroy(star, 5f);
+        Destroy(star, 6f);
     }
 
     IEnumerator FadeInGameplayCo()

@@ -64,7 +64,6 @@ public class MiningShip : MonoBehaviour
                         estEnChasse = true;
                         col = Color.red;
                         mouvement = direction;
-
                     }
                     else
                     {

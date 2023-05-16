@@ -1,23 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShootingStar : MonoBehaviour
 {
-    [SerializeField]
     RectTransform rect;
+    public Image starImage;
+    public SpriteRenderer starSprite;
 
     private void Start()
     {
-        rect = gameObject.GetComponent<RectTransform>();
+        rect = GetComponent<RectTransform>();
+        GameObject image = GameObject.Find("ShootingStarSprite");
+        starSprite = image.GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
-        float newX = transform.position.x + 1;
-        float newY = transform.position.y - 1;
+        starImage.sprite = starSprite.sprite;
 
-        //rect.anchoredPosition = new Vector3(newX, newY, 0f);
-        transform.position = (new Vector3(newX, newY, 1f));
+        float newX = rect.anchoredPosition.x + 10;
+        float newY = rect.anchoredPosition.y - 10;
+
+        rect.anchoredPosition = new Vector2(newX, newY);
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3360079647566515631}
   - component: {fileID: 4608653335358068078}
   - component: {fileID: -5473553280028564955}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: MiningShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,8 +14,9 @@ public class PlayerAsteroid : MonoBehaviour
     private GameObject explosion;
     [SerializeField]
     private GameManager gameManager;
+    [SerializeField]
+    private int hp = 2;
 
-  
     private Rigidbody2D rig;
     private Vector2 movement;
     public bool control = false;
@@ -27,6 +28,7 @@ public class PlayerAsteroid : MonoBehaviour
     {
         rig = GetComponent<Rigidbody2D>();
         Spawn();
+        HealthBar.instance.SetMaxHealth(this.hp);
     }
 
     public async void Spawn()
@@ -60,7 +62,8 @@ public class PlayerAsteroid : MonoBehaviour
 
     void Update()
     {
-        GetInput(); 
+        GetInput();
+        CheckIfDead();
     }
 
     private void FixedUpdate()
@@ -77,11 +80,11 @@ public class PlayerAsteroid : MonoBehaviour
         }
     }
 
-    private async void OnCollisionEnter2D(Collision2D collision)
+    public async void CheckIfDead()
     {
-        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+        Debug.Log(hp);
 
-        if (layerName == "Walls" || layerName == "Enemies" || layerName == "SuperNova")
+        if (this.hp <= 0)
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
@@ -91,12 +94,29 @@ public class PlayerAsteroid : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+       string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+
+        if (layerName == "Walls" || layerName == "Ships" || layerName == "Asteroids" || layerName == "Planets")
+        {
+            this.hp -= 1;
+            HealthBar.instance.SetHealth(this.hp);
+        }
+        if (layerName == "SuperNova")
+        {
+            this.hp -= 2;
+            HealthBar.instance.SetHealth(this.hp);
+        }
+    }
+
     private async void OnTriggerEnter2D(Collider2D collision)
     {
         string layerName = LayerMask.LayerToName(collision.gameObject.layer);
 
         if (layerName == "Portal")
         {
+            gameManager.FadeOutGameplay();
             await Task.Delay(1500);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

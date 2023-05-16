@@ -24,12 +24,12 @@ public class Asteroid : MonoBehaviour
    
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        string layerName = LayerMask.LayerToName(collision.gameObject.layer);
+        //string layerName = LayerMask.LayerToName(collision.gameObject.layer);
 
-        if (layerName == "Walls" || layerName == "Enemies" || layerName == "SuperNova")
-        {
+        //if (layerName == "Walls" || layerName == "Planets" || layerName == "SuperNova" || layerName == "Player" || layerName == "Ships")
+        //{
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
-        }
+        //}
     }
 }
