@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class MiningShip : MonoBehaviour
 {
     [SerializeField]
@@ -23,7 +22,6 @@ public class MiningShip : MonoBehaviour
     private bool alive = true;
     private float initialRotation;
 
-    // Start is called before the first frame update
     void Start()
     {
         GameObject go = GameObject.Find(nomDeLaCible);
@@ -43,28 +41,39 @@ public class MiningShip : MonoBehaviour
 
     private void FixedUpdate()
     {
-        direction = cible.position - transform.position;
-        direction.Normalize();
-        Color col = Color.green;
-        float longueurDebug = longueurRayon;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, longueurRayon, LayerMask.GetMask("Player", "Murs"));
-        if (alive)
+        if (cible)
         {
-            if (hit.collider != null)
+            direction = cible.position - transform.position;
+            direction.Normalize();
+            Color col = Color.green;
+            float longueurDebug = longueurRayon;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, longueurRayon, LayerMask.GetMask("Player", "Murs"));
+            if (alive)
             {
-                //J'ai touché quelque chose!
-                col = Color.blue;
-                longueurDebug = hit.distance;
-                if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
+                if (hit.collider != null)
                 {
-                    if (!estEnChasse) //OnEnterState
+                    //J'ai touché quelque chose!
+                    col = Color.blue;
+                    longueurDebug = hit.distance;
+                    if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
                     {
-                        StopAllCoroutines();
-                    }
-                    estEnChasse = true;
-                    col = Color.red;
-                    mouvement = direction;
+                        if (!estEnChasse) //OnEnterState
+                        {
+                            StopAllCoroutines();
+                        }
+                        estEnChasse = true;
+                        col = Color.red;
+                        mouvement = direction;
 
+                    }
+                    else
+                    {
+                        if (estEnChasse) //OnEnterState
+                        {
+                            mouvement = Vector2.zero;
+                        }
+                        estEnChasse = false;
+                    }
                 }
                 else
                 {
@@ -74,26 +83,18 @@ public class MiningShip : MonoBehaviour
                     }
                     estEnChasse = false;
                 }
+                rig.velocity = mouvement * vitesse;
+                Debug.DrawRay(transform.position, direction * longueurDebug, col);
+            }
+            if (estEnChasse)
+            {
+                anim.SetBool("EngineOn", true);
+                RotateTowards(cible.position);
             }
             else
             {
-                if (estEnChasse) //OnEnterState
-                {
-                    mouvement = Vector2.zero;
-                }
-                estEnChasse = false;
+                anim.SetBool("EngineOn", false);
             }
-            rig.velocity = mouvement * vitesse;
-            Debug.DrawRay(transform.position, direction * longueurDebug, col);
-        }
-        if (estEnChasse)
-        {
-            anim.SetBool("EngineOn", true);
-            RotateTowards(cible.position);
-        }
-        else
-        {
-            anim.SetBool("EngineOn", false);
         }
     }
 

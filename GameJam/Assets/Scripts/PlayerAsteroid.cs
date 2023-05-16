@@ -12,6 +12,9 @@ public class PlayerAsteroid : MonoBehaviour
     private float maxSpeed;
     [SerializeField]
     private GameObject explosion;
+    [SerializeField]
+    private GameManager gameManager;
+
   
     private Rigidbody2D rig;
     private Vector2 movement;
@@ -82,7 +85,7 @@ public class PlayerAsteroid : MonoBehaviour
         {
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
-            Fader.instance.FadeOut();
+            gameManager.FadeOutGameplay();
             await Task.Delay(1500);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -94,6 +97,7 @@ public class PlayerAsteroid : MonoBehaviour
 
         if (layerName == "Portal")
         {
+            await Task.Delay(1500);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }   

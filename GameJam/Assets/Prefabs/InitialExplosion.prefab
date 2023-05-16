@@ -19365,7 +19365,7 @@ GameObject:
   - component: {fileID: 9078440584727029162}
   - component: {fileID: 9078440584727029159}
   m_Layer: 0
-  m_Name: CFXR2 WW Explosion
+  m_Name: InitialExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
