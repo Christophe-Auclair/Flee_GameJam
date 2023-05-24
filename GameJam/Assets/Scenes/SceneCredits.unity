@@ -448,9 +448,13 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 907346750532500944, guid: f30aa3bf0177c55468fd8aa790d77591, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4287278220898483414, guid: f30aa3bf0177c55468fd8aa790d77591, type: 3}
       propertyPath: m_Intensity
-      value: 0
+      value: 4.987971
       objectReference: {fileID: 0}
     - target: {fileID: 9203588384124382091, guid: f30aa3bf0177c55468fd8aa790d77591, type: 3}
       propertyPath: m_Layer
@@ -493,7 +497,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interval: 10
-  taux: 0.001
   starSpawnLocation: {fileID: 0}
   shootingStar: {fileID: 0}
 --- !u!4 &584158406

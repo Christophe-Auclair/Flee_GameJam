@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8119647519809928128}
   - component: {fileID: 8119647519809928129}
   - component: {fileID: 8119647519809928134}
+  - component: {fileID: 1352534649640717388}
   m_Layer: 5
   m_Name: ShootingStarImage
   m_TagString: Untagged
@@ -91,3 +92,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starImage: {fileID: 8119647519809928129}
   starSprite: {fileID: 0}
+--- !u!50 &1352534649640717388
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119647519809928132}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 1a7b3ede96faeaf49ab6ab9ad6775cfd, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

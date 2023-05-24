@@ -58,6 +58,15 @@ public class GameManager : MonoBehaviour
             menuAsteroid = GameObject.Find("MenuAsteroid");
             StartCoroutine(ShootingStar());
         }
+        if (SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            Cursor.visible = false;
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            Cursor.visible = true;
+        }
+
     }
 
     public async void StartGame()
@@ -113,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             colTemp.a -= taux;
             faderGameplay.color = colTemp;
-            yield return new WaitForEndOfFrame(); 
+            yield return new WaitForFixedUpdate(); 
         }
         //Pour ne pas avoir de alpha negatif
         colTemp.a = 0.0f;
@@ -129,7 +138,7 @@ public class GameManager : MonoBehaviour
         {
             colTemp.a += taux;
             faderGameplay.color = colTemp;
-            yield return new WaitForEndOfFrame(); //a Chaque update
+            yield return new WaitForFixedUpdate(); //a Chaque update
         }
         //Pour ne pas avoir de alpha plus que 1
         colTemp.a = 1f;
@@ -144,7 +153,7 @@ public class GameManager : MonoBehaviour
         {
             colTemp.a -= taux;
             faderUI.color = colTemp;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         //Pour ne pas avoir de alpha negatif
         colTemp.a = 0.0f;
@@ -160,7 +169,7 @@ public class GameManager : MonoBehaviour
         {
             colTemp.a += taux;
             faderUI.color = colTemp;
-            yield return new WaitForEndOfFrame(); //a Chaque update
+            yield return new WaitForFixedUpdate(); //a Chaque update
         }
         //Pour ne pas avoir de alpha plus que 1
         colTemp.a = 1f;

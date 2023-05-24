@@ -11,6 +11,10 @@ public class PlayerAsteroid : MonoBehaviour
     [SerializeField]
     private float maxSpeed;
     [SerializeField]
+    private float boostDecelaration;
+    [SerializeField]
+    private float boostDecelerationRate;
+    [SerializeField]
     private GameObject explosion;
     [SerializeField]
     private GameObject endExplosion;
@@ -18,13 +22,21 @@ public class PlayerAsteroid : MonoBehaviour
     private GameManager gameManager;
     [SerializeField]
     private int hp = 3;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
     private Rigidbody2D rig;
     private Vector2 movement;
     public bool control = false;
     public bool end = false;
     private bool boosted;
+    private bool boostEnded = true;
     private int boostedFramesRemaining;
+
+    private Color flickerColor = Color.red;
+    private float flickerDuration = 0.1f;
+    private int flickerCount = 5;
+    private bool invulnerable = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +52,10 @@ public class PlayerAsteroid : MonoBehaviour
 
     public async void Spawn()
     {
-        await Task.Delay(3000);
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            await Task.Delay(3000);
+        }
         control = true;
     }
 
@@ -63,9 +78,28 @@ public class PlayerAsteroid : MonoBehaviour
         if (!end)
         {
             rig.AddForce(new Vector2((movement.x * moveSpeed), (movement.y * moveSpeed)), ForceMode2D.Force);
-            if (!boosted)
+
+            if (boosted)
             {
-                rig.velocity = Vector2.ClampMagnitude(rig.velocity, maxSpeed);
+                boostedFramesRemaining -= 1;
+                if (boostedFramesRemaining <= 0)
+                {
+                    boosted = false;
+                }
+            }
+            else if (!boosted && !boostEnded)
+            {
+                boostDecelaration -= boostDecelerationRate * Time.deltaTime;
+                Debug.Log(boostDecelaration);
+                if (boostDecelaration <= maxSpeed)
+                {
+                    boostEnded = true;
+                }
+                rig.velocity = Vector2.ClampMagnitude(rig.velocity, boostDecelaration);
+            }
+            else if (!boosted && boostEnded)
+            {
+                rig.velocity = Vector2.ClampMagnitude(rig.velocity, maxSpeed);                
             }
         }
     }
@@ -80,14 +114,6 @@ public class PlayerAsteroid : MonoBehaviour
     {
         Move();
         this.transform.Rotate(0, 0, 1f);
-        if (boosted)
-        {
-            boostedFramesRemaining -= 1;
-            if (boostedFramesRemaining <= 0)
-            {
-                boosted = false;
-            }
-        }
     }
 
     public async void CheckIfDead()
@@ -108,14 +134,32 @@ public class PlayerAsteroid : MonoBehaviour
 
         if (layerName == "Walls" || layerName == "Ships" || layerName == "Asteroids" || layerName == "Planets" || layerName == "Missiles")
         {
-            this.hp -= 1;
-            HealthBar.instance.SetHealth(this.hp);
+            if (!invulnerable)
+            {
+                this.hp -= 1;
+                HealthBar.instance.SetHealth(this.hp);
+                StartCoroutine(FlickerSprite());
+            }
         }
         if (layerName == "SuperNova")
         {
-            this.hp -= 2;
+            this.hp -= 3;
             HealthBar.instance.SetHealth(this.hp);
         }
+    }
+
+    private IEnumerator FlickerSprite()
+    {
+        invulnerable = true;
+        for (int i = 0; i < flickerCount; i++)
+        {
+            spriteRenderer.color = flickerColor;
+            yield return new WaitForSeconds(flickerDuration);
+
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(flickerDuration);
+        }
+        invulnerable = false;
     }
 
     private async void OnTriggerEnter2D(Collider2D collision)
@@ -124,7 +168,17 @@ public class PlayerAsteroid : MonoBehaviour
 
         if (layerName == "Portal")
         {
+            control = false;
+            boosted = true;
+            end = true;
+            GameObject portal = GameObject.Find("Portal");
+            Vector3 direction = portal.transform.position - transform.position;
+            direction.Normalize();
+            rig.velocity = new Vector2(0f, 0f);
+            rig.AddForce(new Vector2((direction.x * 15f), (direction.y * 15f)), ForceMode2D.Impulse);
+            await Task.Delay(1000);
             gameManager.FadeOutGameplay();
+            Destroy(this.gameObject);
             await Task.Delay(1500);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }   
@@ -132,7 +186,8 @@ public class PlayerAsteroid : MonoBehaviour
         {
             rig.AddForce(new Vector2((movement.x * (moveSpeed * 1.5f)), (movement.y * (moveSpeed * 0.75f))), ForceMode2D.Impulse);
             boosted = true;
-            boostedFramesRemaining = 130;
+            boostEnded = false;
+            boostedFramesRemaining = 60;
         }   
         else if (layerName == "MotherShip")
         {
@@ -151,7 +206,7 @@ public class PlayerAsteroid : MonoBehaviour
             Destroy(this.gameObject);
             GameObject motherShip = GameObject.Find("MotherShip");
             Destroy(motherShip);
-            await Task.Delay(3000);
+            await Task.Delay(1000);
             gameManager.FadeOutGameplay();
             await Task.Delay(1500);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
